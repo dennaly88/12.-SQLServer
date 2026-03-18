@@ -13,34 +13,24 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-SELECT s.nombre, i.ip_address
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-WHERE EXISTS (
-    SELECT 1 FROM Redes r 
-    WHERE r.id = i.red_id AND r.estado = 'Activo'
+
+-- Crear BD temporal con datos nuevos
+RESTORE DATABASE servidores_vtv_nueva 
+FROM DISK = '/var/opt/mssql/backups/servidores_vtv_Full_20260318_1101.bak'
+WITH MOVE 'VTV_data' TO '/var/opt/mssql/data/servidores_vtv_nueva.mdf',
+     MOVE 'VTV_log' TO '/var/opt/mssql/data/servidores_vtv_nueva.ldf',
+     REPLACE;
+
+-- Comparar y actualizar solo lo diferente
+INSERT INTO servidores_vtv.Servidores 
+SELECT * FROM servidores_vtv_nueva.Servidores 
+WHERE NOT EXISTS (
+    SELECT 1 FROM servidores_vtv.Servidores s 
+    WHERE s.nombre = servidores_vtv_nueva.Servidores.nombre
 );
 
-
-SELECT 
-    s.nombre,
-    stats.servidores_en_ubicacion
-FROM Servidores s
-JOIN (
-    SELECT ubicacion, COUNT(*) as servidores_en_ubicacion
-    FROM Servidores
-    GROUP BY ubicacion
-) stats ON s.ubicacion = stats.ubicacion;
-
-SELECT 
-    s.nombre,
-    s.ip,
-    r.nombre_red,
-    (SELECT COUNT(*) FROM Interfaces i2 
-     WHERE i2.servidor_id = s.id) AS interfaces_servidor
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-JOIN Redes r ON i.red_id = r.id;
+-- Limpiar
+DROP DATABASE servidores_vtv_nueva;
 
 
 

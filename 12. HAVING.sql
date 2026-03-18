@@ -14,10 +14,33 @@
 #___________________________________________________#
 
 
+SELECT 
+    tecnico_responsable,
+    COUNT(*) AS total_servidores
+FROM Servidores
+GROUP BY tecnico_responsable
+HAVING COUNT(*) > 1;
 
-#___________________________________________________#
-🛢 Terminal 🛢
-#___________________________________________________#
+SELECT 
+    r.nombre_red,
+    COUNT(DISTINCT s.id) AS servidores_conectados
+FROM Redes r
+LEFT JOIN Interfaces i ON r.id = i.red_id
+LEFT JOIN Servidores s ON i.servidor_id = s.id
+GROUP BY r.nombre_red
+HAVING COUNT(DISTINCT s.id) > 1;
+
+
+SELECT 
+    s.nombre,
+    SUM(m.horas_trabajo) AS horas_totales
+FROM Servidores s
+LEFT JOIN Mantenimientos m ON s.id = m.servidor_id
+GROUP BY s.nombre, s.ip
+HAVING SUM(m.horas_trabajo) > 2.0 OR SUM(m.horas_trabajo) IS NULL;
+
+
+
 
 
 

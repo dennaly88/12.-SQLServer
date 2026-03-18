@@ -13,34 +13,26 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-SELECT s.nombre, i.ip_address
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-WHERE EXISTS (
-    SELECT 1 FROM Redes r 
-    WHERE r.id = i.red_id AND r.estado = 'Activo'
-);
-
+SELECT 
+    nombre,
+    UPPER(nombre) AS nombre_mayus,
+    LOWER(tecnico_responsable) AS tecnico_minus
+FROM Servidores;
 
 SELECT 
-    s.nombre,
-    stats.servidores_en_ubicacion
-FROM Servidores s
-JOIN (
-    SELECT ubicacion, COUNT(*) as servidores_en_ubicacion
-    FROM Servidores
-    GROUP BY ubicacion
-) stats ON s.ubicacion = stats.ubicacion;
+    nombre_red,
+    LEFT(nombre_red, 3) AS prefijo,
+    RIGHT(nombre_red, 3) AS sufijo
+FROM Redes;
 
 SELECT 
-    s.nombre,
-    s.ip,
-    r.nombre_red,
-    (SELECT COUNT(*) FROM Interfaces i2 
-     WHERE i2.servidor_id = s.id) AS interfaces_servidor
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-JOIN Redes r ON i.red_id = r.id;
+    nombre,
+    LEN(nombre) AS longitud_nombre,
+    SUBSTRING(nombre, 1, 3) AS tres_primeros,
+    SUBSTRING(nombre, 5, 3) AS tres_medio
+FROM Servidores;
+
+
 
 
 

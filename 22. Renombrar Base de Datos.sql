@@ -13,34 +13,29 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-SELECT s.nombre, i.ip_address
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-WHERE EXISTS (
-    SELECT 1 FROM Redes r 
-    WHERE r.id = i.red_id AND r.estado = 'Activo'
-);
+
+-- Cambiar nombre de VTV a uno más profesional
+USE master;
+GO
+
+ALTER DATABASE VTV 
+SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+GO
+
+ALTER DATABASE VTV 
+MODIFY NAME = servidores_vtv;
+GO
+
+ALTER DATABASE servidores_vtv
+SET MULTI_USER;
+GO
+
+USE servidores_vtv;  -- Ya está renombrada
 
 
-SELECT 
-    s.nombre,
-    stats.servidores_en_ubicacion
-FROM Servidores s
-JOIN (
-    SELECT ubicacion, COUNT(*) as servidores_en_ubicacion
-    FROM Servidores
-    GROUP BY ubicacion
-) stats ON s.ubicacion = stats.ubicacion;
 
-SELECT 
-    s.nombre,
-    s.ip,
-    r.nombre_red,
-    (SELECT COUNT(*) FROM Interfaces i2 
-     WHERE i2.servidor_id = s.id) AS interfaces_servidor
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-JOIN Redes r ON i.red_id = r.id;
+
+
 
 
 

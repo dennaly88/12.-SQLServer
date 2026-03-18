@@ -13,35 +13,25 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-SELECT s.nombre, i.ip_address
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-WHERE EXISTS (
-    SELECT 1 FROM Redes r 
-    WHERE r.id = i.red_id AND r.estado = 'Activo'
-);
+
+-- Restaurar EXACTAMENTE igual que estaba
+RESTORE DATABASE servidores_vtv 
+FROM DISK = '/var/opt/mssql/backups/servidores_vtv_Full_20260318_1101.bak'
+WITH MOVE 'servidores_vtv' TO '/var/opt/mssql/data/servidores_vtv.mdf',
+     MOVE 'servidores_vtv_Log' TO '/var/opt/mssql/data/servidores_vtv.ldf',
+     REPLACE, STATS = 10;
+GO
 
 
-SELECT 
-    s.nombre,
-    stats.servidores_en_ubicacion
-FROM Servidores s
-JOIN (
-    SELECT ubicacion, COUNT(*) as servidores_en_ubicacion
-    FROM Servidores
-    GROUP BY ubicacion
-) stats ON s.ubicacion = stats.ubicacion;
+USE servidores_vtv;
+GO
 
-SELECT 
-    s.nombre,
-    s.ip,
-    r.nombre_red,
-    (SELECT COUNT(*) FROM Interfaces i2 
-     WHERE i2.servidor_id = s.id) AS interfaces_servidor
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-JOIN Redes r ON i.red_id = r.id;
-
+SELECT '✅ ¡RESTAURACIÓN PERFECTA!' AS Estado;
+SELECT COUNT(*) AS Total_Servidores FROM Servidores;
+SELECT COUNT(*) AS Total_Redes FROM Redes;
+SELECT COUNT(*) AS Total_Interfaces FROM Interfaces;
+SELECT TOP 3 nombre, ip FROM Servidores;
+GO
 
 
 #___________________________________________________#

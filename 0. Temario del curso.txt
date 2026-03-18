@@ -1,52 +1,37 @@
+________________________
 Temas del Curso 
+________________________
 
-☑️ 1. Conexión al servidor — terminal y gráfico
-2. Crear base de datos — terminal y gráfico
-3. Crear tablas — terminal y gráfico
-4. Crear campos (columnas y tipos de datos)
-5. Constraints — PRIMARY KEY, FOREIGN KEY, CHECK, DEFAULT
-6. INSERT — insertar datos
-7. SELECT básico — consultar datos
-8. WHERE — filtrar resultados
-9. ORDER BY y TOP — ordenar y limitar
-10. UPDATE — modificar datos
-11. DELETE y TRUNCATE — eliminar datos
-12. GROUP BY y funciones de agregado — SUM, COUNT, AVG, MAX, MIN
-13. HAVING — filtrar grupos
-14. JOINS — INNER, LEFT, RIGHT, FULL OUTER
-15. UNION, INTERSECT, EXCEPT — combinar resultados
-16. Subconsultas — correlated y uncorrelated
-17. CASE WHEN — lógica condicional
-18. Funciones de texto — CONCAT, LEN, SUBSTRING, REPLACE, TRIM
-19. Funciones de fecha — GETDATE, DATEADD, DATEDIFF, FORMAT
-20. Funciones matemáticas — ROUND, ABS, CEILING, FLOOR
-21. NULL — ISNULL, COALESCE, IS NULL
-22. Paginación — OFFSET FETCH
-23. CTEs — expresiones de tabla comunes
-24. CTEs recursivas — jerarquías y árboles
-25. Vistas — CREATE VIEW, vistas indexadas
-26. Window functions — ROW_NUMBER, RANK, DENSE_RANK
-27. Window functions avanzadas — LAG, LEAD, FIRST_VALUE, acumulados
-28. Tablas temporales — #temp y ##global
-29. Variables y DECLARE
-30. WHILE y control de flujo
-31. Stored Procedures — crear y ejecutar
-32. Parámetros OUTPUT en Stored Procedures
-33. Funciones escalares — CREATE FUNCTION
-34. Funciones de tabla — inline TVF
-35. TRY CATCH — manejo de errores
-36. THROW y RAISERROR — lanzar errores personalizados
-37. Transacciones — BEGIN, COMMIT, ROLLBACK
-38. Niveles de aislamiento — READ COMMITTED, SNAPSHOT, SERIALIZABLE
-39. Deadlocks — detección y prevención
-40. Índices — clustered y non-clustered
-41. Covering indexes e índices compuestos
-42. Índices filtrados y columnstore
-43. Planes de ejecución — leer e interpretar en ADS
-44. DMVs de rendimiento — índices faltantes, estadísticas, IO
-45. Triggers — AFTER e INSTEAD OF
-46. Usuarios, logins y roles — seguridad básica
-47. GRANT, DENY, REVOKE — permisos
-48. Row-Level Security — RLS
-49. Dynamic Data Masking
-50. Backup y restore — FULL, DIFFERENTIAL, LOG
+
+☑️ 1.  Conexión al servidor
+☑️ 2.  Crear base de datos
+☑️ 3.  Crear tablas 
+☑️ 4.  ALTER
+☑️ 5.  INSERT
+☑️ 6.  SELECT
+☑️ 7.  WHERE
+☑️ 8.  ORDER BY
+☑️ 9.  UPDATE
+☑️ 10. DELETE
+☑️ 11. GROUP BY
+☑️ 12. HAVING
+☑️ 13. JOINS
+☑️ 14. UNION
+☑️ 15. Subconsultas
+☑️ 16. CASE WHEN
+☑️ 17. Funciones de texto
+☑️ 18. Funciones matematicas
+☑️ 19. NULL,ISNULL Y COALESCE
+☑️ 20. WHILE LOOP
+☑️ 21. Triggers
+☑️ 22. Renombrar Base de datos
+☑️ 23. Backup de la Base de datos
+☑️ 24. Drop base de datos
+☑️ 25. Restore base de datos
+☑️ 26. Update base de datos
+
+
+
+
+
+

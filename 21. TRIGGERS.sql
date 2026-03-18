@@ -13,34 +13,24 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-SELECT s.nombre, i.ip_address
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-WHERE EXISTS (
-    SELECT 1 FROM Redes r 
-    WHERE r.id = i.red_id AND r.estado = 'Activo'
-);
+
+CREATE TRIGGER trg_AuditServidorInsert
+ON Servidores
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO Mantenimientos (servidor_id, tecnico, descripcion, fecha_mantenimiento)
+    SELECT 
+        i.id, 
+        'Sistema', 
+        'Servidor registrado automáticamente', 
+        GETDATE()
+    FROM inserted i;
+END;
+GO
 
 
-SELECT 
-    s.nombre,
-    stats.servidores_en_ubicacion
-FROM Servidores s
-JOIN (
-    SELECT ubicacion, COUNT(*) as servidores_en_ubicacion
-    FROM Servidores
-    GROUP BY ubicacion
-) stats ON s.ubicacion = stats.ubicacion;
 
-SELECT 
-    s.nombre,
-    s.ip,
-    r.nombre_red,
-    (SELECT COUNT(*) FROM Interfaces i2 
-     WHERE i2.servidor_id = s.id) AS interfaces_servidor
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-JOIN Redes r ON i.red_id = r.id;
 
 
 

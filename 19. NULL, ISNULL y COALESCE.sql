@@ -13,34 +13,33 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-SELECT s.nombre, i.ip_address
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-WHERE EXISTS (
-    SELECT 1 FROM Redes r 
-    WHERE r.id = i.red_id AND r.estado = 'Activo'
-);
 
-
+-- Si NULL, devuelve segundo valor
 SELECT 
-    s.nombre,
-    stats.servidores_en_ubicacion
-FROM Servidores s
-JOIN (
-    SELECT ubicacion, COUNT(*) as servidores_en_ubicacion
-    FROM Servidores
-    GROUP BY ubicacion
-) stats ON s.ubicacion = stats.ubicacion;
+    nombre,
+    ISNULL(tecnico_responsable, 'Sin técnico asignado') AS responsable,
+    ISNULL(ram_gb, 0) AS ram_gb_seguro
+FROM Servidores;
 
+
+-- Primer valor NO NULL
 SELECT 
-    s.nombre,
-    s.ip,
-    r.nombre_red,
-    (SELECT COUNT(*) FROM Interfaces i2 
-     WHERE i2.servidor_id = s.id) AS interfaces_servidor
+    nombre,
+    COALESCE(tecnico_responsable, 
+             usuario, 
+             'Sin asignado') AS responsable_completo,
+    COALESCE(m.costo, 0, 0.00) AS costo_sin_null
 FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-JOIN Redes r ON i.red_id = r.id;
+LEFT JOIN Mantenimientos m ON s.id = m.servidor_id;
+
+-- Si "valor1 = valor2" devuelve NULL
+SELECT 
+    nombre,
+    NULLIF(estado, 'Retirado') AS estado_activo,
+    NULLIF(ip, '0.0.0.0') AS ip_valida
+FROM Servidores;
+
+
 
 
 

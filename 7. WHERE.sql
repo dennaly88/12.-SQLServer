@@ -14,10 +14,33 @@
 #___________________________________________________#
 
 
+SELECT nombre, ip, hostname, ram_gb, ubicacion
+FROM Servidores
+WHERE estado = 'Activo';
 
-#___________________________________________________#
-🛢 Terminal 🛢
-#___________________________________________________#
+
+SELECT 
+    s.nombre AS Servidor,
+    i.nombre_interfaz,
+    i.ip_address,
+    r.nombre_red,
+    r.vlan_id
+FROM Servidores s
+JOIN Interfaces i ON s.id = i.servidor_id
+JOIN Redes r ON i.red_id = r.id
+WHERE i.estado = 'Up' 
+  AND r.vlan_id = 10;
+
+
+SELECT 
+    s.nombre AS Servidor,
+    m.fecha_mantenimiento,
+    m.tecnico,
+    m.descripcion,
+    m.horas_trabajo
+FROM Mantenimientos m
+JOIN Servidores s ON m.servidor_id = s.id
+WHERE m.fecha_mantenimiento >= DATEADD(MONTH, -1, GETDATE());
 
 
 

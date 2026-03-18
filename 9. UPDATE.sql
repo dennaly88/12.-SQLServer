@@ -15,9 +15,19 @@
 
 
 
-#___________________________________________________#
-🛢 Terminal 🛢
-#___________________________________________________#
+
+UPDATE Servidores 
+SET estado = 'En Mantenimiento',
+    tecnico_responsable = 'Carlos Lopez - Mantenimiento'
+WHERE nombre = 'SRV-FILE01';
+
+
+UPDATE Servidores 
+SET ram_gb = 64,
+    cpu_cores = 12,
+    disco_gb = 800,
+    tecnico_responsable = 'Danny Jimenez - Upgrade'
+WHERE ip = '192.168.1.20';
 
 
 

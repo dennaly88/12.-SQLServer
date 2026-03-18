@@ -12,42 +12,33 @@
 #___________________________________________________#
 🛢 Azure Data Studio  
 #___________________________________________________#
--- Servidores → Plantas
-ALTER TABLE Servidores
-  ADD CONSTRAINT FK_Servidores_Plantas
-  FOREIGN KEY (PlantaID) REFERENCES Plantas(PlantaID);
+
+ 
+
+USE VTV;
 GO
 
--- Vehiculos → Propietarios
-ALTER TABLE Vehiculos
-  ADD CONSTRAINT FK_Vehiculos_Propietarios
-  FOREIGN KEY (PropietarioID) REFERENCES Propietarios(PropietarioID);
+-- Verificar relaciones existentes
+SELECT 
+    fk.name AS ForeignKey,
+    tp.name AS ParentTable,
+    cp.name AS ParentColumn,
+    tr.name AS ReferencedTable,
+    cr.name AS ReferencedColumn
+FROM sys.foreign_keys fk
+INNER JOIN sys.tables tp ON fk.parent_object_id = tp.object_id
+INNER JOIN sys.tables tr ON fk.referenced_object_id = tr.object_id
+INNER JOIN sys.foreign_key_columns fkc ON fkc.constraint_object_id = fk.object_id
+INNER JOIN sys.columns cp ON fkc.parent_column_id = cp.column_id AND fkc.parent_object_id = cp.object_id
+INNER JOIN sys.columns cr ON fkc.referenced_column_id = cr.column_id AND fkc.referenced_object_id = cr.object_id;
 GO
 
--- Turnos → Vehiculos
-ALTER TABLE Turnos
-  ADD CONSTRAINT FK_Turnos_Vehiculos
-  FOREIGN KEY (VehiculoID) REFERENCES Vehiculos(VehiculoID);
-GO
 
--- Turnos → Servidores
-ALTER TABLE Turnos
-  ADD CONSTRAINT FK_Turnos_Servidores
-  FOREIGN KEY (ServidorID) REFERENCES Servidores(ServidorID);
-GO
 
--- Inspecciones → Turnos (relación 1 a 1)
-ALTER TABLE Inspecciones
-  ADD CONSTRAINT FK_Inspecciones_Turnos
-  FOREIGN KEY (TurnoID) REFERENCES Turnos(TurnoID);
-GO
 
--- ItemsInspeccion → Inspecciones
-ALTER TABLE ItemsInspeccion
-  ADD CONSTRAINT FK_Items_Inspecciones
-  FOREIGN KEY (InspeccionID) REFERENCES Inspecciones(InspeccionID);
-GO
 
+
+ 
 
 #___________________________________________________#
 #  CÚA , ESTADO MIRANDA 2026                        #

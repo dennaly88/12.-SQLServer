@@ -14,83 +14,76 @@
 #___________________________________________________#
 
 
--- Plantas de VTV (sucursales / estaciones)
-CREATE TABLE Plantas (
-  PlantaID    INT           IDENTITY(1,1) PRIMARY KEY,
-  Nombre      NVARCHAR(100) NOT NULL,
-  Direccion   NVARCHAR(200) NOT NULL,
-  Ciudad      NVARCHAR(80)  NOT NULL,
-  Telefono    VARCHAR(20)   NULL,
-  Activa      BIT           NOT NULL DEFAULT 1
-);
+USE VTV;
 GO
 
--- Servidores / líneas de inspección dentro de cada planta
 CREATE TABLE Servidores (
-  ServidorID  INT           IDENTITY(1,1) PRIMARY KEY,
-  PlantaID    INT           NOT NULL,        -- FK → Plantas
-  Nombre      NVARCHAR(80)  NOT NULL,        -- Ej: "Línea 1", "Línea 2"
-  Tipo        VARCHAR(30)   NOT NULL,        -- Liviano / Pesado / Moto
-  Activo      BIT           NOT NULL DEFAULT 1
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    ip VARCHAR(15) NOT NULL,
+    hostname VARCHAR(100),
+    sistema_operativo VARCHAR(30),
+    ram_gb INT,
+    cpu_cores INT,
+    disco_gb INT,
+    ubicacion VARCHAR(50),
+    estado VARCHAR(20) DEFAULT 'Activo',
+    fecha_alta DATETIME DEFAULT GETDATE(),
+    tecnico_responsable VARCHAR(100)
 );
-GO
 
--- Propietarios de vehículos
-CREATE TABLE Propietarios (
-  PropietarioID INT           IDENTITY(1,1) PRIMARY KEY,
-  DNI           VARCHAR(15)   NOT NULL UNIQUE,
-  Nombre        NVARCHAR(100) NOT NULL,
-  Apellido      NVARCHAR(100) NOT NULL,
-  Email         NVARCHAR(150) NULL,
-  Telefono      VARCHAR(20)   NULL
-);
-GO
 
--- Vehículos
-CREATE TABLE Vehiculos (
-  VehiculoID    INT           IDENTITY(1,1) PRIMARY KEY,
-  PropietarioID INT           NOT NULL,      -- FK → Propietarios
-  Patente       VARCHAR(10)   NOT NULL UNIQUE,
-  Marca         NVARCHAR(60)  NOT NULL,
-  Modelo        NVARCHAR(80)  NOT NULL,
-  Anio          SMALLINT      NOT NULL,
-  TipoVehiculo  VARCHAR(20)   NOT NULL,      -- Liviano / Pesado / Moto
-  Combustible   VARCHAR(20)   NULL           -- Nafta / Diesel / GNC / Eléctrico
+CREATE TABLE Redes (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    nombre_red VARCHAR(50) NOT NULL,
+    vlan_id INT,
+    rango_ip VARCHAR(20),
+    mascara VARCHAR(15),
+    gateway VARCHAR(15),
+    switch_principal VARCHAR(50),
+    puerto_switch VARCHAR(20),
+    estado VARCHAR(20) DEFAULT 'Activo'
 );
-GO
 
--- Turnos
-CREATE TABLE Turnos (
-  TurnoID       INT       IDENTITY(1,1) PRIMARY KEY,
-  VehiculoID    INT       NOT NULL,          -- FK → Vehiculos
-  ServidorID    INT       NOT NULL,          -- FK → Servidores
-  FechaHora     DATETIME  NOT NULL,
-  Estado        VARCHAR(20) NOT NULL DEFAULT 'Reservado'
-                            -- Reservado / Confirmado / Cancelado / Completado
-);
-GO
 
--- Inspecciones (resultado del turno)
-CREATE TABLE Inspecciones (
-  InspeccionID  INT           IDENTITY(1,1) PRIMARY KEY,
-  TurnoID       INT           NOT NULL UNIQUE, -- FK → Turnos (1 a 1)
-  FechaInspeccion DATETIME    NOT NULL DEFAULT GETDATE(),
-  Resultado     VARCHAR(20)   NOT NULL,       -- Aprobado / Condicional / Rechazado
-  Observaciones NVARCHAR(500) NULL,
-  ProximaVTV    DATE          NULL            -- fecha de vencimiento
-);
-GO
+CREATE TABLE Interfaces (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    servidor_id INT FOREIGN KEY REFERENCES Servidores(id),
+    nombre_interfaz VARCHAR(30),
+    ip_address VARCHAR(15),
+    mac_address VARCHAR(17),
+    red_id INT FOREIGN KEY REFERENCES Redes(id),
 
--- Ítems inspeccionados por inspección
-CREATE TABLE ItemsInspeccion (
-  ItemID        INT           IDENTITY(1,1) PRIMARY KEY,
-  InspeccionID  INT           NOT NULL,      -- FK → Inspecciones
-  Categoria     NVARCHAR(80)  NOT NULL,      -- Frenos / Luces / Emisiones / etc.
-  Descripcion   NVARCHAR(200) NOT NULL,
-  Estado        VARCHAR(20)   NOT NULL       -- OK / Observado / Rechazado
+    estado VARCHAR(20) DEFAULT 'Up'
 );
-GO
-SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE';"
+
+CREATE TABLE Mantenimientos (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    servidor_id INT FOREIGN KEY REFERENCES Servidores(id),
+    fecha_mantenimiento DATETIME DEFAULT GETDATE(),
+    tecnico VARCHAR(100),
+    descripcion TEXT,
+    horas_trabajo DECIMAL(4,2),
+    costo DECIMAL(10,2)
+);
+
+
+CREATE TABLE Usuarios_Sistema (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    servidor_id INT FOREIGN KEY REFERENCES Servidores(id),
+    usuario VARCHAR(50),
+    uid INT,
+    grupo_principal VARCHAR(50),
+    ultimo_login DATETIME,
+    estado_cuenta VARCHAR(20)
+);
+
+
+
+
+
+
+
 
 #___________________________________________________#
 #  CÚA , ESTADO MIRANDA 2026                        #

@@ -14,10 +14,29 @@
 #___________________________________________________#
 
 
+SELECT 
+    ubicacion,
+    COUNT(*) AS total_servidores,
+    AVG(ram_gb) AS ram_promedio_gb
+FROM Servidores
+GROUP BY ubicacion;
 
-#___________________________________________________#
-🛢 Terminal 🛢
-#___________________________________________________#
+SELECT 
+    sistema_operativo,
+    COUNT(*) AS cantidad_servidores,
+    SUM(ram_gb) AS ram_total_gb
+FROM Servidores
+GROUP BY sistema_operativo
+ORDER BY cantidad_servidores DESC;
+
+
+SELECT 
+    tecnico_responsable,
+    COUNT(*) AS servidores_asignados,
+    SUM(disco_gb) AS almacenamiento_total_gb
+FROM Servidores
+GROUP BY tecnico_responsable;
+
 
 
 

@@ -13,11 +13,10 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-
-
-#___________________________________________________#
-🛢 Terminal 🛢
-#___________________________________________________#
+DELETE FROM Mantenimientos WHERE servidor_id = 3;
+DELETE FROM Usuarios_Sistema WHERE servidor_id = 3;
+DELETE FROM Interfaces WHERE servidor_id = 3;
+DELETE FROM Servidores WHERE nombre = 'SRV-FILE01';
 
 
 

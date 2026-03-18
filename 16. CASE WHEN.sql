@@ -13,34 +13,33 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-SELECT s.nombre, i.ip_address
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-WHERE EXISTS (
-    SELECT 1 FROM Redes r 
-    WHERE r.id = i.red_id AND r.estado = 'Activo'
-);
+
+SELECT 
+    nombre,
+    ip,
+    ram_gb,
+    CASE 
+        WHEN ram_gb >= 64 THEN '🟢 POTENTE'
+        WHEN ram_gb >= 32 THEN '🟡 NORMAL' 
+        WHEN ram_gb < 32 THEN '🔴 DÉBIL'
+        ELSE '❓ DESCONOCIDO'
+    END AS clasificacion_servidor
+FROM Servidores;
 
 
 SELECT 
-    s.nombre,
-    stats.servidores_en_ubicacion
-FROM Servidores s
-JOIN (
-    SELECT ubicacion, COUNT(*) as servidores_en_ubicacion
-    FROM Servidores
-    GROUP BY ubicacion
-) stats ON s.ubicacion = stats.ubicacion;
+    nombre_red,
+    vlan_id,
+    CASE 
+        WHEN vlan_id < 20 THEN '🔴 PRODUCCIÓN'
+        WHEN vlan_id BETWEEN 20 AND 99 THEN '🟡 DMZ/TEST'
+        WHEN vlan_id >= 100 THEN '🟢 GESTIÓN'
+    END AS tipo_red
+FROM Redes;
 
-SELECT 
-    s.nombre,
-    s.ip,
-    r.nombre_red,
-    (SELECT COUNT(*) FROM Interfaces i2 
-     WHERE i2.servidor_id = s.id) AS interfaces_servidor
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-JOIN Redes r ON i.red_id = r.id;
+
+
+
 
 
 

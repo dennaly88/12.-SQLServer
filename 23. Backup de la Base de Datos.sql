@@ -13,34 +13,23 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-SELECT s.nombre, i.ip_address
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-WHERE EXISTS (
-    SELECT 1 FROM Redes r 
-    WHERE r.id = i.red_id AND r.estado = 'Activo'
-);
+USE servidores_vtv;
+GO
 
 
-SELECT 
-    s.nombre,
-    stats.servidores_en_ubicacion
-FROM Servidores s
-JOIN (
-    SELECT ubicacion, COUNT(*) as servidores_en_ubicacion
-    FROM Servidores
-    GROUP BY ubicacion
-) stats ON s.ubicacion = stats.ubicacion;
+DECLARE @fecha VARCHAR(20) = FORMAT(GETDATE(),'yyyyMMdd_HHmm');
+DECLARE @ruta NVARCHAR(256) = '/var/opt/mssql/backups/servidores_vtv_Full_' + @fecha + '.bak';
 
-SELECT 
-    s.nombre,
-    s.ip,
-    r.nombre_red,
-    (SELECT COUNT(*) FROM Interfaces i2 
-     WHERE i2.servidor_id = s.id) AS interfaces_servidor
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-JOIN Redes r ON i.red_id = r.id;
+BACKUP DATABASE servidores_vtv 
+TO DISK = @ruta
+WITH FORMAT, INIT, STATS = 10;
+
+PRINT '✅ Backup creado: ' + @ruta;
+GO
+
+
+
+
 
 
 

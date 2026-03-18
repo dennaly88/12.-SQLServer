@@ -12,7 +12,19 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-
+SELECT TOP (1000) [id]
+      ,[nombre]
+      ,[ip]
+      ,[hostname]
+      ,[sistema_operativo]
+      ,[ram_gb]
+      ,[cpu_cores]
+      ,[disco_gb]
+      ,[ubicacion]
+      ,[estado]
+      ,[fecha_alta]
+      ,[tecnico_responsable]
+  FROM [VTV].[dbo].[Servidores]
 
 
 

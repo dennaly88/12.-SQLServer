@@ -13,34 +13,34 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-SELECT s.nombre, i.ip_address
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-WHERE EXISTS (
-    SELECT 1 FROM Redes r 
-    WHERE r.id = i.red_id AND r.estado = 'Activo'
-);
+
+SELECT 
+    nombre,
+    ram_gb,
+    ABS(ram_gb - 32) AS diferencia_ram,  
+    ROUND(ram_gb * 1.1, 0) AS ram_con_10pct,  
+    CEILING(cpu_cores * 1.25) AS cores_optimos  
+FROM Servidores;
+
+
+SELECT 
+    nombre,
+    ram_gb,
+    POWER(2, 10) AS ram_kb,  
+    SQRT(ram_gb) AS raiz_ram,
+    POWER(cpu_cores, 2) AS potencia_cores_cuadrada
+FROM Servidores;
 
 
 SELECT 
     s.nombre,
-    stats.servidores_en_ubicacion
+    SUM(m.horas_trabajo) AS horas_totales,
+    ROUND(SUM(m.horas_trabajo) * 25.50, 2) AS costo_total,  
+    CEILING(SUM(m.horas_trabajo) * 25.50 / 100.0) * 100 AS costo_redondeado
 FROM Servidores s
-JOIN (
-    SELECT ubicacion, COUNT(*) as servidores_en_ubicacion
-    FROM Servidores
-    GROUP BY ubicacion
-) stats ON s.ubicacion = stats.ubicacion;
+LEFT JOIN Mantenimientos m ON s.id = m.servidor_id
+GROUP BY s.nombre;
 
-SELECT 
-    s.nombre,
-    s.ip,
-    r.nombre_red,
-    (SELECT COUNT(*) FROM Interfaces i2 
-     WHERE i2.servidor_id = s.id) AS interfaces_servidor
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-JOIN Redes r ON i.red_id = r.id;
 
 
 

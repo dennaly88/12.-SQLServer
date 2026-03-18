@@ -13,34 +13,34 @@
 🛢 Azure Data Studio  
 #___________________________________________________#
 
-SELECT s.nombre, i.ip_address
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-WHERE EXISTS (
-    SELECT 1 FROM Redes r 
-    WHERE r.id = i.red_id AND r.estado = 'Activo'
-);
+DECLARE @contador INT = 1;
+WHILE @contador <= 5
+BEGIN
+    PRINT 'Servidor #' + CAST(@contador AS VARCHAR(2));
+    SET @contador = @contador + 1;
+END;
 
 
-SELECT 
-    s.nombre,
-    stats.servidores_en_ubicacion
-FROM Servidores s
-JOIN (
-    SELECT ubicacion, COUNT(*) as servidores_en_ubicacion
-    FROM Servidores
-    GROUP BY ubicacion
-) stats ON s.ubicacion = stats.ubicacion;
 
-SELECT 
-    s.nombre,
-    s.ip,
-    r.nombre_red,
-    (SELECT COUNT(*) FROM Interfaces i2 
-     WHERE i2.servidor_id = s.id) AS interfaces_servidor
-FROM Servidores s
-JOIN Interfaces i ON s.id = i.servidor_id
-JOIN Redes r ON i.red_id = r.id;
+DECLARE @i INT = 1;
+WHILE @i <= 10
+BEGIN
+    IF @i = 5 SET @i = @i + 1; CONTINUE;  
+    IF @i > 8 BREAK;                     
+    PRINT 'Paso: ' + CAST(@i AS VARCHAR(2));
+    SET @i = @i + 1;
+END;
+
+
+DECLARE @mes INT = 1;
+WHILE @mes <= 12
+BEGIN
+    PRINT 'Backup Mensual #' + CAST(@mes AS VARCHAR(2)) + 
+          ' - ' + DATENAME(MONTH, DATEADD(MONTH, @mes-1, '2026-01-01'));
+    SET @mes = @mes + 1;
+END;
+
+
 
 
 
