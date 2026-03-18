@@ -53,7 +53,30 @@ ________________________________________________________________________________
 📋 Material Cubierto
 
 
-☑️ 1. Conexión al servidor  <br>
+☑️ 1. Conexión al servidor   <br>
+☑️ 2.  Crear base de datos    <br>
+☑️ 3.  Crear tablas           <br>
+☑️ 4.  ALTER                  <br>
+☑️ 5.  INSERT                 <br>
+☑️ 6.  SELECT                 <br>
+☑️ 7.  WHERE                  <br>
+☑️ 8.  ORDER BY               <br>
+☑️ 9.  UPDATE                 <br>
+☑️ 10. DELETE                 <br>
+☑️ 11. GROUP BY               <br>
+☑️ 12. HAVING                 <br>
+☑️ 13. JOINS                  <br>
+☑️ 14. UNION                  <br>
+☑️ 15. Subconsultas           <br>
+☑️ 16. CASE WHEN              <br>
+☑️ 17. Funciones de texto     <br>
+☑️ 18. Funciones matematicas  <br>
+☑️ 19. NULL,ISNULL Y COALESCE <br>
+☑️ 20. WHILE LOOP             <br>
+☑️ 21. Triggers               <br>
+☑️ 22. Renombrar Base de datos <br>
+☑️ 23. Backup de la Base de datos <br>
+☑️ 24. Drop base                  <br>
 
 
 
